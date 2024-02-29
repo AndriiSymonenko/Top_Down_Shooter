@@ -1553,8 +1553,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3540a7ab58594fc4e9a1637dde8efcfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerWalkSpeed: 5
+  playerWalkSpeed: 2
   aimTransform: {fileID: 481614296}
+  playerRunSpeed: 4
   layerMaskAim:
     serializedVersion: 2
     m_Bits: 72

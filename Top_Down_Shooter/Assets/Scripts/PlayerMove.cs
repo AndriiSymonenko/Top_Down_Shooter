@@ -14,9 +14,14 @@ public class PlayerMove : MonoBehaviour
     [Header("Movement Setup")]
     [SerializeField] private float playerWalkSpeed;
     [SerializeField] private Transform aimTransform;
+    [SerializeField] private float playerRunSpeed;
+    private float vertycalVelocity;
+    private bool isRunning;
+    private float speed;
 
     [Header("Aim Setup")]
     [SerializeField] private LayerMask layerMaskAim;
+
 
     private Vector3 lookDirection;
 
@@ -24,25 +29,20 @@ public class PlayerMove : MonoBehaviour
 
     private Vector2 moveInput;
     private Vector2 aimInput;
-    private float vertycalVelocity;
 
 
     private void Awake()
     {
-
-        playerControll = new PlayerControll();
-
-        playerControll.Player.PlayerMove.performed += context => moveInput = context.ReadValue<Vector2>();
-        playerControll.Player.PlayerMove.canceled += context => moveInput = Vector2.zero;
-
-        playerControll.Player.AimControll.performed += context => aimInput = context.ReadValue<Vector2>();
-        playerControll.Player.AimControll.canceled += context => aimInput = Vector2.zero;
+        AssaingInputEvent();
     }
+
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+
+        speed = playerWalkSpeed;
     }
 
     private void Update()
@@ -52,6 +52,37 @@ public class PlayerMove : MonoBehaviour
         AnimatorControll();
     }
 
+
+
+
+    private void AssaingInputEvent()
+    {
+        playerControll = new PlayerControll();
+
+        playerControll.Player.Shoot.performed += context => Shoot();
+
+        playerControll.Player.PlayerMove.performed += context => moveInput = context.ReadValue<Vector2>();
+        playerControll.Player.PlayerMove.canceled += context => moveInput = Vector2.zero;
+
+        playerControll.Player.AimControll.performed += context => aimInput = context.ReadValue<Vector2>();
+        playerControll.Player.AimControll.canceled += context => aimInput = Vector2.zero;
+
+        playerControll.Player.Run.performed += context =>
+        {
+            speed = playerRunSpeed;
+            isRunning = true;
+        };
+        playerControll.Player.Run.canceled += context =>
+        {
+            speed = playerWalkSpeed;
+            isRunning = false;
+        };
+    }
+
+    private void Shoot()
+    {
+        animator.SetTrigger("Shoot");
+    }
     private void AimMousePosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(aimInput);
@@ -75,6 +106,9 @@ public class PlayerMove : MonoBehaviour
 
         animator.SetFloat("xVelocity", xVelocity, .1f, Time.deltaTime);
         animator.SetFloat("zVelocity", zVelocity, .1f, Time.deltaTime);
+
+        bool playRunAnimation = isRunning && moveDirection.magnitude > 0;
+        animator.SetBool("isRunning", playRunAnimation);
     }
     private void ApplyMove()
     {
@@ -83,7 +117,7 @@ public class PlayerMove : MonoBehaviour
 
         if (moveDirection.magnitude > 0)
         {
-            characterController.Move(moveDirection * playerWalkSpeed * Time.deltaTime);
+            characterController.Move(moveDirection * speed * Time.deltaTime);
         }
     }
 
