@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
 {
+
+    private Player player; 
+
     private PlayerControll playerControll;
     private CharacterController characterController;
     private Animator animator;
@@ -31,18 +34,19 @@ public class PlayerMove : MonoBehaviour
     private Vector2 aimInput;
 
 
-    private void Awake()
-    {
-        AssaingInputEvent();
-    }
+
 
 
     private void Start()
     {
+        player = GetComponent<Player>();
+
         characterController = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
 
         speed = playerWalkSpeed;
+
+        AssaingInputEvent();
     }
 
     private void Update()
@@ -57,9 +61,7 @@ public class PlayerMove : MonoBehaviour
 
     private void AssaingInputEvent()
     {
-        playerControll = new PlayerControll();
-
-        playerControll.Player.Shoot.performed += context => Shoot();
+        playerControll = player.playerControll;
 
         playerControll.Player.PlayerMove.performed += context => moveInput = context.ReadValue<Vector2>();
         playerControll.Player.PlayerMove.canceled += context => moveInput = Vector2.zero;
@@ -79,10 +81,7 @@ public class PlayerMove : MonoBehaviour
         };
     }
 
-    private void Shoot()
-    {
-        animator.SetTrigger("Shoot");
-    }
+
     private void AimMousePosition()
     {
         Ray ray = Camera.main.ScreenPointToRay(aimInput);
@@ -134,13 +133,4 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        playerControll.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControll.Disable();
-    }
 }
