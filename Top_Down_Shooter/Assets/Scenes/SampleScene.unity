@@ -2179,6 +2179,7 @@ MonoBehaviour:
   autoRifle: {fileID: 5304107062172434452}
   shotgun: {fileID: 47540198665974421}
   sniperRifle: {fileID: 2962240667268442902}
+  rigIncreaseStep: 3
   leftHand: {fileID: 425052641}
 --- !u!1 &1660283135
 GameObject:
@@ -2830,6 +2831,7 @@ GameObject:
   - component: {fileID: 919132148254115994}
   - component: {fileID: 919132148254115995}
   - component: {fileID: 919132148254115996}
+  - component: {fileID: 919132148254115997}
   m_Layer: 0
   m_Name: Main Player
   m_TagString: Untagged
@@ -2957,6 +2959,18 @@ MonoBehaviour:
   - {fileID: 608321760566940596}
   - {fileID: 2916570862451303264}
   - {fileID: 8044669280979665858}
+--- !u!114 &919132148254115997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148254115993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1477dca7b5604074290cd39f7417ddc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1031632035247270014
 Transform:
   m_ObjectHideFlags: 0

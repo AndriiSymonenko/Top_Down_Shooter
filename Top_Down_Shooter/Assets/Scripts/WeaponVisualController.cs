@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class WeaponVisualController : MonoBehaviour
 {
@@ -16,14 +17,21 @@ public class WeaponVisualController : MonoBehaviour
     [SerializeField] private Transform sniperRifle;
 
     private Transform currentGun;
+    private Rig rig;
+
+    [Header("Rig")]
+    [SerializeField] private float rigIncreaseStep;
+    private bool rigShouldBeIncreased;
 
     [Header("Left Hand IK")]
     [SerializeField] private Transform leftHand;
+    
     
 
 
     private void Start()
     {
+        rig = GetComponentInChildren<Rig>();
         animator = GetComponentInChildren<Animator>();
 
         SwitchOn(pistol);
@@ -31,39 +39,28 @@ public class WeaponVisualController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        CheskWeaponSwitch();
+
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            SwitchOn(pistol);
-            SwitchAnimationLayer(1);
+            animator.SetTrigger("Reload");
+            rig.weight = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (rigShouldBeIncreased)
         {
-            SwitchOn(revolver);
-            SwitchAnimationLayer(1);
+            rig.weight += rigIncreaseStep * Time.deltaTime;
+
+            if (rig.weight >= 1)
+            {
+                rigShouldBeIncreased = false;
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            SwitchOn(autoRifle);
-            SwitchAnimationLayer(1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            SwitchOn(shotgun);
-            SwitchAnimationLayer(2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            SwitchOn(sniperRifle);
-            SwitchAnimationLayer(1);
-        }
-
-
-
     }
+
+    public void ReturnRigWeigthToOne() => rigShouldBeIncreased = true;
+
+
 
     private void SwitchOn(Transform gunTransform)
     {
@@ -98,5 +95,37 @@ public class WeaponVisualController : MonoBehaviour
         }
 
         animator.SetLayerWeight(indexLayer, 1);
+    }
+    private void CheskWeaponSwitch()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SwitchOn(pistol);
+            SwitchAnimationLayer(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SwitchOn(revolver);
+            SwitchAnimationLayer(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            SwitchOn(autoRifle);
+            SwitchAnimationLayer(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            SwitchOn(shotgun);
+            SwitchAnimationLayer(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            SwitchOn(sniperRifle);
+            SwitchAnimationLayer(1);
+        }
     }
 }
