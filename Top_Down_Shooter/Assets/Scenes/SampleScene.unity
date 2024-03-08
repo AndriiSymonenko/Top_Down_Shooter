@@ -1480,7 +1480,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.46306393, y: 0, z: 0, w: 0.8863249}
-  m_LocalPosition: {x: 0, y: 4.1, z: -1.8}
+  m_LocalPosition: {x: 0, y: 4.07, z: -1.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2179,8 +2179,10 @@ MonoBehaviour:
   autoRifle: {fileID: 5304107062172434452}
   shotgun: {fileID: 47540198665974421}
   sniperRifle: {fileID: 2962240667268442902}
-  rigIncreaseStep: 3
-  leftHand: {fileID: 425052641}
+  rigIncreaseStep: 1
+  leftHandIK: {fileID: 1251048629}
+  leftHandIK_Target: {fileID: 425052641}
+  leftHandIKIncreaseStep: 1
 --- !u!1 &1660283135
 GameObject:
   m_ObjectHideFlags: 0

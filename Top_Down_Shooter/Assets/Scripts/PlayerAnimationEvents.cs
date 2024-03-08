@@ -19,4 +19,16 @@ public class PlayerAnimationEvents : MonoBehaviour
 
         //Refill-bulets
     }
+
+    public void ReturnRig()
+    {
+        visualController.ReturnRigWeigthToOne();
+        visualController.ReturnWeightToLeftHand();
+
+    }
+
+    public void WeaponGrabIsOver()
+    {
+        visualController.SetBusyGrabWeaponTo(false);
+    }
 }
