@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
-    private WeaponVisualController visualController;
+    private PlayerWeaponVisuals visualController;
 
     private void Start()
     {
-        visualController = GetComponentInParent<WeaponVisualController>();
+        visualController = GetComponentInParent<PlayerWeaponVisuals>();
 
 
     }
 
     public void ReloadIsOver()
     {
-        visualController.ReturnRigWeigthToOne();
+        visualController.MaximazeRigWeight();
 
         //Refill-bulets
     }
 
     public void ReturnRig()
     {
-        visualController.ReturnRigWeigthToOne();
-        visualController.ReturnWeightToLeftHand();
+        visualController.MaximazeRigWeight();
+        visualController.MaximazeLeftHandWeight();
 
     }
 

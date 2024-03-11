@@ -16,22 +16,17 @@ public class PlayerMove : MonoBehaviour
 
     [Header("Movement Setup")]
     [SerializeField] private float playerWalkSpeed;
-    [SerializeField] private Transform aimTransform;
     [SerializeField] private float playerRunSpeed;
     private float vertycalVelocity;
     private bool isRunning;
     private float speed;
-
-    [Header("Aim Setup")]
-    [SerializeField] private LayerMask layerMaskAim;
-
-
-    private Vector3 lookDirection;
-
     private Vector3 moveDirection;
 
+
+
+
     private Vector2 moveInput;
-    private Vector2 aimInput;
+ 
 
 
 
@@ -52,7 +47,7 @@ public class PlayerMove : MonoBehaviour
     private void Update()
     {
         ApplyMove();
-        AimMousePosition();
+        ApllyRotation();
         AnimatorControll();
     }
 
@@ -65,9 +60,6 @@ public class PlayerMove : MonoBehaviour
 
         playerControll.Player.PlayerMove.performed += context => moveInput = context.ReadValue<Vector2>();
         playerControll.Player.PlayerMove.canceled += context => moveInput = Vector2.zero;
-
-        playerControll.Player.AimControll.performed += context => aimInput = context.ReadValue<Vector2>();
-        playerControll.Player.AimControll.canceled += context => aimInput = Vector2.zero;
 
         playerControll.Player.Run.performed += context =>
         {
@@ -82,20 +74,13 @@ public class PlayerMove : MonoBehaviour
     }
 
 
-    private void AimMousePosition()
+    private void ApllyRotation()
     {
-        Ray ray = Camera.main.ScreenPointToRay(aimInput);
+          Vector3  lookDirection = player.playerAim.GetMousePosition() - transform.position;
+          lookDirection.y = 0f;
+          lookDirection.Normalize();
 
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMaskAim))
-        {
-            lookDirection = hit.point - transform.position;
-            lookDirection.y = 0f;
-            lookDirection.Normalize();
-
-            transform.forward = lookDirection;
-
-            aimTransform.position = new Vector3(hit.point.x, transform.position.y + 1, hit.point.z);
-        }
+          transform.forward = lookDirection;
     }
 
     private void AnimatorControll()

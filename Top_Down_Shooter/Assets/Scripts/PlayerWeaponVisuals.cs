@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-public class WeaponVisualController : MonoBehaviour
+public class PlayerWeaponVisuals : MonoBehaviour
 {
 
     private Animator animator;
+    private bool isGrabingWeapon;
 
+    #region Gun transforms region
     [SerializeField] private Transform[] gunTransforms;
 
     [SerializeField] private Transform pistol;
@@ -17,20 +19,21 @@ public class WeaponVisualController : MonoBehaviour
     [SerializeField] private Transform sniperRifle;
 
     private Transform currentGun;
-    private Rig rig;
+    #endregion
+
 
     [Header("Rig")]
-    [SerializeField] private float rigIncreaseStep;
-    private bool rigShouldBeIncreased;
+    [SerializeField] private float rigWeightIncreaseRate;
+    private bool shouldIncrease_RigWeight;
+    private Rig rig;
 
     [Header("Left Hand IK")]
     [SerializeField] TwoBoneIKConstraint leftHandIK;
     [SerializeField] private Transform leftHandIK_Target;
-    [SerializeField] private float leftHandIKIncreaseStep;
-    private bool leftHandWeightIncrease;
+    [SerializeField] private float leftHandIKWeightIncreaseRate;
+    private bool shouldIncrease_LeftHandIKWeight;
 
 
-    private bool busyGrabWeapon;
 
 
     private void Start()
@@ -45,10 +48,10 @@ public class WeaponVisualController : MonoBehaviour
     {
         CheskWeaponSwitch();
 
-        if (Input.GetKeyDown(KeyCode.R) && busyGrabWeapon == false)
+        if (Input.GetKeyDown(KeyCode.R) && isGrabingWeapon == false)
         {
             animator.SetTrigger("Reload");
-            PauseRig();
+            ReduceRigWeight();
         }
 
         UpdateRigWeight();
@@ -58,31 +61,31 @@ public class WeaponVisualController : MonoBehaviour
 
     private void UpdateLeftHandIKWeight()
     {
-        if (leftHandWeightIncrease)
+        if (shouldIncrease_LeftHandIKWeight)
         {
-            leftHandIK.weight += leftHandIKIncreaseStep * Time.deltaTime;
+            leftHandIK.weight += leftHandIKWeightIncreaseRate * Time.deltaTime;
 
             if (leftHandIK.weight >= 1)
             {
-                leftHandWeightIncrease = false;
+                shouldIncrease_LeftHandIKWeight = false;
             }
         }
     }
 
     private void UpdateRigWeight()
     {
-        if (rigShouldBeIncreased)
+        if (shouldIncrease_RigWeight)
         {
-            rig.weight += rigIncreaseStep * Time.deltaTime;
+            rig.weight += rigWeightIncreaseRate * Time.deltaTime;
 
             if (rig.weight >= 1)
             {
-                rigShouldBeIncreased = false;
+                shouldIncrease_RigWeight = false;
             }
         }
     }
 
-    private void PauseRig()
+    private void ReduceRigWeight()
     {
         rig.weight = 0;
     }
@@ -90,7 +93,7 @@ public class WeaponVisualController : MonoBehaviour
     private void PlayWeaponGrabAnimation(GrabType grabType)
     {
         leftHandIK.weight = 0;
-        PauseRig();
+        ReduceRigWeight();
         animator.SetFloat("Weapon Grab Type", ((float)grabType));
         animator.SetTrigger("Grab Weapon");
 
@@ -100,12 +103,12 @@ public class WeaponVisualController : MonoBehaviour
 
     public void SetBusyGrabWeaponTo(bool busy)
     {
-        busyGrabWeapon = busy;
-        animator.SetBool("BusyGrabWeapon", busyGrabWeapon);
+        isGrabingWeapon = busy;
+        animator.SetBool("BusyGrabWeapon", isGrabingWeapon);
     }
 
-    public void ReturnRigWeigthToOne() => rigShouldBeIncreased = true;
-    public void ReturnWeightToLeftHand() => leftHandWeightIncrease = true;
+    public void MaximazeRigWeight() => shouldIncrease_RigWeight = true;
+    public void MaximazeLeftHandWeight() => shouldIncrease_LeftHandIKWeight = true;
 
 
 
