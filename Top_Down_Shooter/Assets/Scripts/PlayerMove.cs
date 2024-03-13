@@ -17,16 +17,15 @@ public class PlayerMove : MonoBehaviour
     [Header("Movement Setup")]
     [SerializeField] private float playerWalkSpeed;
     [SerializeField] private float playerRunSpeed;
+    [SerializeField] private float turnSpeed;
     private float vertycalVelocity;
     private bool isRunning;
     private float speed;
+
+    public Vector2 moveInput { get; private set; }
     private Vector3 moveDirection;
 
 
-
-
-    private Vector2 moveInput;
- 
 
 
 
@@ -76,11 +75,13 @@ public class PlayerMove : MonoBehaviour
 
     private void ApllyRotation()
     {
-          Vector3  lookDirection = player.playerAim.GetMousePosition() - transform.position;
+          Vector3  lookDirection = player.playerAim.GetMouseHitInfo().point - transform.position;
           lookDirection.y = 0f;
           lookDirection.Normalize();
 
-          transform.forward = lookDirection;
+        Quaternion desiredRotation = Quaternion.LookRotation(lookDirection);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, desiredRotation, turnSpeed * Time.deltaTime);
     }
 
     private void AnimatorControll()

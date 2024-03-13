@@ -7,12 +7,26 @@ public class PlayerAim : MonoBehaviour
     private Player player;
     private PlayerControll playerControll;
 
-    
-    [SerializeField] private Transform aimTransform;
+    [Header("Aim control")]
+    [SerializeField] private Transform aim;
+
+    [SerializeField] private bool isAimingPrecisly;
+
+    [Header("Camera control")]
+    [SerializeField] private Transform cameraTarget;
+    [Range(.5f, 1f)]
+    [SerializeField] private float minCameraDistance = 1f;
+    [Range(1f, 3f)]
+    [SerializeField] private float maxCameraDistance = 2.5f;
+    [Range(3f, 5f)]
+    [SerializeField] private float cameraSensitivity = 7;
+
+    [Space]
+
     [SerializeField] private LayerMask aimLayerMask;
-    private Vector3 lookDirection;
 
     private Vector2 aimInput;
+    private RaycastHit lastKnowMouseHit;
 
 
     private void Start()
@@ -23,19 +37,63 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
-        aimTransform.position = new Vector3(GetMousePosition().x, transform.position.y, GetMousePosition().z);
+        if (Input.GetKeyDown(KeyCode.P))
+            isAimingPrecisly = !isAimingPrecisly;
+
+        UpdateAimPosition();
+        UpdateCameraPosition();
+
     }
 
-    public Vector3 GetMousePosition()
+    private void UpdateCameraPosition()
+    {
+        cameraTarget.position = Vector3.Lerp(cameraTarget.position, DesiredCameraPosition(), cameraSensitivity * Time.deltaTime);
+    }
+
+    private void UpdateAimPosition()
+    {
+        aim.position = GetMouseHitInfo().point;
+
+        if (!isAimingPrecisly)
+            aim.position = new Vector3(aim.position.x, transform.position.y + 1, aim.position.z);
+    }
+
+    public RaycastHit GetMouseHitInfo()
     {
         Ray ray = Camera.main.ScreenPointToRay(aimInput);
 
         if (Physics.Raycast(ray, out var hit, Mathf.Infinity, aimLayerMask))
         {
-            return hit.point;
+            lastKnowMouseHit = hit;
+            return hit;
         }
 
-        return Vector3.zero;
+        return lastKnowMouseHit;
+    }
+
+    private Vector3 DesiredCameraPosition()
+    {
+        float actualMaxCameraDistance = player.playerMove.moveInput.y < -.5f ? minCameraDistance : maxCameraDistance;
+
+        Vector3 desiredACameraPosition = GetMouseHitInfo().point;
+        Vector3 aimDirection = (desiredACameraPosition - transform.position).normalized;
+
+        float distanceToDesiredPosition = Vector3.Distance(transform.position, desiredACameraPosition);
+        float clampedDistance = Mathf.Clamp(distanceToDesiredPosition, minCameraDistance, actualMaxCameraDistance);
+
+
+        desiredACameraPosition = transform.position + aimDirection * clampedDistance;
+        desiredACameraPosition.y = transform.position.y + 1;
+
+        return desiredACameraPosition;
+    }
+
+    public bool CanAimPrecisly()
+    {
+        if (isAimingPrecisly)
+            return true;
+
+        return false;
     }
 
     private void AssignInputIvents()
