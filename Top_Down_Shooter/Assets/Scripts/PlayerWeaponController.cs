@@ -9,10 +9,10 @@ public class PlayerWeaponController : MonoBehaviour
     [Header("Bullet seting")]
     [SerializeField] private GameObject bullet;
     [SerializeField] private float bulletSpeed;
-    [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform gunPoint;
 
     [SerializeField] private Transform weaponHolder;
-    [SerializeField] private Transform aim;
+    
 
 
     private void Start()
@@ -24,34 +24,37 @@ public class PlayerWeaponController : MonoBehaviour
     {
 
 
-        GameObject bulletPrefab = Instantiate(bullet, firePoint.position, Quaternion.LookRotation(firePoint.forward));
+        GameObject bulletPrefab = Instantiate(bullet, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
         bulletPrefab.GetComponent<Rigidbody>().velocity = BulletDirection() * bulletSpeed;
         Destroy(bulletPrefab, 10f);
 
         GetComponentInChildren<Animator>().SetTrigger("Shoot");
     }
 
-    private Vector3 BulletDirection()
+    public Vector3 BulletDirection()
     {
+        Transform aim = player.playerAim.Aim();
 
+        Vector3 direction = (aim.position - gunPoint.position).normalized;
 
-        Vector3 direction = (aim.position - firePoint.position).normalized;
-
-        if (!player.playerAim.CanAimPrecisly())
+        if (player.playerAim.CanAimPrecisly() == false && player.playerAim.Target() == null)
+        {
             direction.y = 0;
+        }
 
-
-        weaponHolder.LookAt(aim);
-        firePoint.LookAt(aim);
+        //weaponHolder.LookAt(aim); Reload animation is broken, if this method on.
+        //gunPoint.LookAt(aim);
 
         return direction;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25);
-        Gizmos.color = Color.yellow;
+    public Transform GunPoint() => gunPoint;
 
-        Gizmos.DrawLine(firePoint.position, firePoint.position + BulletDirection() * 25);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawLine(weaponHolder.position, weaponHolder.position + weaponHolder.forward * 25);
+    //    Gizmos.color = Color.yellow;
+
+    //    Gizmos.DrawLine(firePoint.position, firePoint.position + (BulletDirection() * 25));
+    //}
 }
