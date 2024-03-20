@@ -8,7 +8,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        rigidbody.constraints = RigidbodyConstraints.FreezeAll;
-        //Destroy(gameObject, .1f);
+        //rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+        Destroy(gameObject, .01f);
     }
 }
