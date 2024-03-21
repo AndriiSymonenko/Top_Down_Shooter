@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    private const float REFERENCE_BULLET_SPEED = 20f;
+
     private Player player;
 
     [Header("Bullet seting")]
@@ -25,7 +27,11 @@ public class PlayerWeaponController : MonoBehaviour
 
 
         GameObject bulletPrefab = Instantiate(bullet, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
-        bulletPrefab.GetComponent<Rigidbody>().velocity = BulletDirection() * bulletSpeed;
+
+        Rigidbody rbBulletPrefab = bulletPrefab.GetComponent<Rigidbody>();
+
+        rbBulletPrefab.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
+        rbBulletPrefab.velocity = BulletDirection() * bulletSpeed;
         Destroy(bulletPrefab, 10f);
 
         GetComponentInChildren<Animator>().SetTrigger("Shoot");
