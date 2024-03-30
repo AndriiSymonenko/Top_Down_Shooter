@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
             ContactPoint contact = collision.contacts[0];
 
             GameObject newBulletImpactFX = Instantiate(bulletImpactFX, contact.point, Quaternion.LookRotation(contact.normal));
-            //Destroy(newBulletImpactFX);
+            Destroy(newBulletImpactFX, 1f);
         }
     }
 }

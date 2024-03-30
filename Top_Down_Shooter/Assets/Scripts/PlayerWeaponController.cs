@@ -1,12 +1,14 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    private Player player;
     private const float REFERENCE_BULLET_SPEED = 20f;
 
-    private Player player;
+    [SerializeField] private Weapon currentWeapon;
+    
 
     [Header("Bullet seting")]
     [SerializeField] private GameObject bullet;
@@ -14,25 +16,69 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private Transform gunPoint;
 
     [SerializeField] private Transform weaponHolder;
-    
+    [SerializeField] private GameObject weaponFire;
 
+    [Header("Inventory")]
+    [SerializeField] private List<Weapon> weaponSlots;
 
     private void Start()
     {
         player = GetComponent<Player>();
-        player.playerControll.Player.Shoot.performed += context => Shoot();
+        AssignWeaponEvents();
+
+        currentWeapon.ammo = currentWeapon.maxAmmo;
     }
+
+    private void AssignWeaponEvents()
+    {
+        PlayerControll playerControll = player.playerControll;
+
+        playerControll.Player.Shoot.performed += context => Shoot();
+
+        playerControll.Player.EquipSlot1.performed += context => EquipWeapon(0);
+        playerControll.Player.EquipSlot2.performed += context => EquipWeapon(1);
+
+        playerControll.Player.DropCurrentWeapon.performed += context => DropWeapon();
+
+    }
+
+    private void EquipWeapon(int i)
+    {
+        currentWeapon = weaponSlots[i];
+    }
+
+    private void DropWeapon()
+    {
+        if (weaponSlots.Count <= 1)
+        {
+            return;
+        }
+
+        weaponSlots.Remove(currentWeapon);
+
+        currentWeapon = weaponSlots[0];
+
+    }
+
     private void Shoot()
     {
+        currentWeapon.ammo--;
 
+        if (currentWeapon.ammo <= 0)
+        {
+            Debug.Log("No more bullets");
+            return;
+        }
 
-        GameObject bulletPrefab = Instantiate(bullet, gunPoint.position, Quaternion.LookRotation(gunPoint.forward));
+        GameObject bulletPrefab = Instantiate(bullet, gunPoint.position, Quaternion.identity);
+        GameObject fireWeaponFX = Instantiate(weaponFire, gunPoint.position, Quaternion.identity);
 
         Rigidbody rbBulletPrefab = bulletPrefab.GetComponent<Rigidbody>();
 
         rbBulletPrefab.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
         rbBulletPrefab.velocity = BulletDirection() * bulletSpeed;
         Destroy(bulletPrefab, 10f);
+        Destroy(fireWeaponFX, 1f);
 
         GetComponentInChildren<Animator>().SetTrigger("Shoot");
     }
