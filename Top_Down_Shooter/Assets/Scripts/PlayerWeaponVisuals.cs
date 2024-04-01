@@ -46,7 +46,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void Update()
     {
-        CheskWeaponSwitch();
+        CheñkWeaponSwitch();
 
         if (Input.GetKeyDown(KeyCode.R) && isGrabingWeapon == false)
         {
@@ -147,7 +147,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
         animator.SetLayerWeight(indexLayer, 1);
     }
-    private void CheskWeaponSwitch()
+    private void CheñkWeaponSwitch()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
