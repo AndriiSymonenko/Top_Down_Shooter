@@ -5,7 +5,7 @@ using UnityEngine.Animations.Rigging;
 
 public class PlayerWeaponVisuals : MonoBehaviour
 {
-
+    private Player player;
     private Animator animator;
     private bool isGrabingWeapon;
 
@@ -33,14 +33,15 @@ public class PlayerWeaponVisuals : MonoBehaviour
     [SerializeField] private float leftHandIKWeightIncreaseRate;
     private bool shouldIncrease_LeftHandIKWeight;
 
-
+    private PlayerWeaponController weaponController;
 
 
     private void Start()
     {
+        player = GetComponent<Player>();
         rig = GetComponentInChildren<Rig>();
         animator = GetComponentInChildren<Animator>();
-
+        weaponController = GetComponent<PlayerWeaponController>();
         SwitchOn(pistol);
     }
 
@@ -48,15 +49,22 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         CheñkWeaponSwitch();
 
-        if (Input.GetKeyDown(KeyCode.R) && isGrabingWeapon == false)
-        {
-            animator.SetTrigger("Reload");
-            ReduceRigWeight();
-        }
+
 
         UpdateRigWeight();
 
         UpdateLeftHandIKWeight();
+    }
+
+    public void PlayReloadAnimation()
+    {
+        if (isGrabingWeapon)
+            return;
+        animator.SetTrigger("Reload");
+        ReduceRigWeight();
+        
+
+       weaponController.CurrentWeapon().RefillBullets(); //refactoring find ReloadIsOver()
     }
 
     private void UpdateLeftHandIKWeight()
@@ -82,6 +90,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
             {
                 shouldIncrease_RigWeight = false;
             }
+            
         }
     }
 

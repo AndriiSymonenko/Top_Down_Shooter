@@ -2811,8 +2811,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon:
     weaponType: 2
-    ammo: 40
-    maxAmmo: 40
+    bulletsInMagazine: 0
+    magazineCapacity: 0
+    totalReserveAmmo: 0
 --- !u!1001 &1116797459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4119,6 +4120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca4c4197ff8f6244b48c42cba4c93a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponVisuals: {fileID: 0}
 --- !u!114 &1583342658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4132,9 +4134,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWeapon:
-    weaponType: 0
-    ammo: 21
-    maxAmmo: 21
+    weaponType: 2
+    bulletsInMagazine: 0
+    magazineCapacity: 0
+    totalReserveAmmo: 0
   bullet: {fileID: 7380706383582729663, guid: 6b899819c332ced4ab60a291a0be1864, type: 3}
   bulletSpeed: 400
   gunPoint: {fileID: 1050825539}
@@ -4143,11 +4146,13 @@ MonoBehaviour:
   maxSlots: 2
   weaponSlots:
   - weaponType: 0
-    ammo: 21
-    maxAmmo: 21
+    bulletsInMagazine: 0
+    magazineCapacity: 15
+    totalReserveAmmo: 33
   - weaponType: 1
-    ammo: 8
-    maxAmmo: 8
+    bulletsInMagazine: 0
+    magazineCapacity: 0
+    totalReserveAmmo: 0
 --- !u!114 &1583342659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6343,7 +6348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &2715566403123878089
 GameObject:
   m_ObjectHideFlags: 0

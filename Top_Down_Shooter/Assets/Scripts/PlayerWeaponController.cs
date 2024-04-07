@@ -21,13 +21,14 @@ public class PlayerWeaponController : MonoBehaviour
     [Header("Inventory")]
     [SerializeField] private int maxSlots = 2;
     [SerializeField] private List<Weapon> weaponSlots;
+    public Weapon CurrentWeapon() => currentWeapon;
 
     private void Start()
     {
         player = GetComponent<Player>();
         AssignWeaponEvents();
 
-        currentWeapon.ammo = currentWeapon.maxAmmo;
+        currentWeapon.bulletsInMagazine = currentWeapon.totalReserveAmmo;
     }
 
 
@@ -96,6 +97,9 @@ public class PlayerWeaponController : MonoBehaviour
         return direction;
     }
 
+    
+
+
     public Transform GunPoint() => gunPoint;
 
     #region Input Event
@@ -109,6 +113,14 @@ public class PlayerWeaponController : MonoBehaviour
         playerControll.Player.EquipSlot2.performed += context => EquipWeapon(1);
 
         playerControll.Player.DropCurrentWeapon.performed += context => DropWeapon();
+
+        playerControll.Player.Reload.performed += context =>
+        {
+            if (currentWeapon.CanReload())
+            {
+                player.weaponVisuals.PlayReloadAnimation();
+            }
+        };
 
     }
 
