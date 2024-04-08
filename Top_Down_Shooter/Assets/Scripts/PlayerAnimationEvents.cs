@@ -5,20 +5,23 @@ using UnityEngine;
 public class PlayerAnimationEvents : MonoBehaviour
 {
     private PlayerWeaponVisuals visualController;
-    //private PlayerWeaponController weaponController;
+    private PlayerWeaponController weaponController;
+
+
 
     private void Start()
     {
         visualController = GetComponentInParent<PlayerWeaponVisuals>();
-        //weaponController = GetComponent<PlayerWeaponController>();
+        weaponController = GetComponentInParent<PlayerWeaponController>();
 
     }
 
     public void ReloadIsOver()
     {
         visualController.MaximazeRigWeight();
-       ///weaponController.CurrentWeapon().RefillBullets();
+        weaponController.CurrentWeapon().RefillBullets();
     }
+
 
     public void ReturnRig()
     {

@@ -37,6 +37,10 @@ public class Weapon
 
     public bool CanReload()
     {
+        if (bulletsInMagazine == magazineCapacity)
+            return false;
+
+
         if (totalReserveAmmo > 0)
         {
             return true;
@@ -48,6 +52,7 @@ public class Weapon
 
     public void RefillBullets()
     {
+        totalReserveAmmo += bulletsInMagazine;
 
         int bulletsToReload = magazineCapacity;
 
