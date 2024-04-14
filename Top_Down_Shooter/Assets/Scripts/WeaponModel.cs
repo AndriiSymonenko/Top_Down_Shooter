@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 public enum GrabType { SideGrab, BackGrab };
-public enum HoldType { CommonHold, LowHold };
+public enum HoldType { CommonHold = 1, LowHold };
 
 public class WeaponModel : MonoBehaviour
 {

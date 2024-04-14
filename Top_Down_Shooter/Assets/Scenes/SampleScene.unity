@@ -610,7 +610,7 @@ Transform:
   m_GameObject: {fileID: 183840405}
   serializedVersion: 2
   m_LocalRotation: {x: 0.4480186, y: 0.6244023, z: -0.4358713, w: -0.46842003}
-  m_LocalPosition: {x: 0.039, y: 0.117, z: 0.109}
+  m_LocalPosition: {x: 0.033, y: 0.117, z: 0.113}
   m_LocalScale: {x: 0.099999994, y: 0.099999994, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4090,10 +4090,10 @@ MonoBehaviour:
     bulletsInMagazine: 0
     magazineCapacity: 15
     totalReserveAmmo: 33
-  - weaponType: 1
+  - weaponType: 3
     bulletsInMagazine: 0
-    magazineCapacity: 0
-    totalReserveAmmo: 0
+    magazineCapacity: 8
+    totalReserveAmmo: 16
 --- !u!114 &1583342659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4106,17 +4106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bbbeb73d2bdb0b42b09b22fd8988ac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gunTransforms:
-  - {fileID: 8645538790511253657}
-  - {fileID: 3027986950875621190}
-  - {fileID: 5304107062172434452}
-  - {fileID: 47540198665974421}
-  - {fileID: 2962240667268442902}
-  pistol: {fileID: 8645538790511253657}
-  revolver: {fileID: 3027986950875621190}
-  autoRifle: {fileID: 5304107062172434452}
-  shotgun: {fileID: 47540198665974421}
-  sniperRifle: {fileID: 2962240667268442902}
+  weaponModels: []
   rigWeightIncreaseRate: 2
   leftHandIK: {fileID: 1251048629}
   leftHandIK_Target: {fileID: 425052641}
@@ -7892,7 +7882,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 1
   grabType: 0
-  holdType: 0
+  holdType: 1
   gunPoint: {fileID: 663120059}
   holdPoint: {fileID: 1200264332}
 --- !u!4 &6833846120416636898
@@ -8455,7 +8445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 0
   grabType: 0
-  holdType: 0
+  holdType: 1
   gunPoint: {fileID: 1050825539}
   holdPoint: {fileID: 183840406}
 --- !u!1 &8670540287766092007
