@@ -37,7 +37,6 @@ public class PlayerWeaponController : MonoBehaviour
     {
         currentWeapon = weaponSlots[i];
 
-        player.weaponVisuals.SwitchOffWeaponModels();
         player.weaponVisuals.PlayWeaponEquipAnimation();
         
 
@@ -46,24 +45,29 @@ public class PlayerWeaponController : MonoBehaviour
     public void PickupWeapon(Weapon newWeapon)
     {
         if (weaponSlots.Count >= maxSlots)
-            return;
-
-        weaponSlots.Add(newWeapon);
-    }
-
-    private void DropWeapon()
-    {
-        if (weaponSlots.Count <= 1)
         {
             return;
         }
 
+        weaponSlots.Add(newWeapon);
+
+        player.weaponVisuals.SwitchOnBackupWeaponMode();
+    }
+
+    private void DropWeapon()
+    {
+        if (HasOnlyOneWeapon())
+            return;
+
+
         weaponSlots.Remove(currentWeapon);
 
-        currentWeapon = weaponSlots[0];
+        EquipWeapon(0);
 
     }
     #endregion
+
+    public bool HasOnlyOneWeapon() => weaponSlots.Count <= 1;
 
     private void Shoot()
     {
@@ -102,10 +106,19 @@ public class PlayerWeaponController : MonoBehaviour
         return direction;
     }
 
-    
-
-
+   
     public Transform GunPoint() => gunPoint;
+
+    public Weapon BackupWeapon()
+    {
+        foreach (Weapon weapon in weaponSlots)
+        {
+            if (weapon != currentWeapon)
+                return weapon;
+        }
+
+        return null;
+    }
 
     #region Input Event
     private void AssignWeaponEvents()
