@@ -7,7 +7,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
 {
     private Player player;
     private Animator animator;
-    private bool isGrabingWeapon;
+    private bool isEquipWeapon;
 
 
 
@@ -68,7 +68,7 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void PlayReloadAnimation()
     {
-        if (isGrabingWeapon)
+        if (isEquipWeapon)
             return;
         animator.SetTrigger("Reload");
         ReduceRigWeight();
@@ -109,12 +109,12 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void PlayWeaponEquipAnimation()
     {
-        GrabType grabType = CurrentWeaponModel().grabType;
+        EquipType equipType = CurrentWeaponModel().equipAnimationType;
 
         leftHandIK.weight = 0;
         ReduceRigWeight();
-        animator.SetFloat("Weapon Grab Type", ((float)grabType));
-        animator.SetTrigger("Grab Weapon");
+        animator.SetFloat("Weapon Equip Type", ((float)equipType));
+        animator.SetTrigger("EquipWeapon");
 
         SetBusyGrabWeaponTo(true);
 
@@ -122,8 +122,8 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     public void SetBusyGrabWeaponTo(bool busy)
     {
-        isGrabingWeapon = busy;
-        animator.SetBool("BusyGrabWeapon", isGrabingWeapon);
+        isEquipWeapon = busy;
+        animator.SetBool("BusyEquipWeapon", isEquipWeapon);
     }
 
     public void MaximazeRigWeight() => shouldIncrease_RigWeight = true;

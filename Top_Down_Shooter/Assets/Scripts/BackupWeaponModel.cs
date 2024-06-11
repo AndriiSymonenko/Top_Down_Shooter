@@ -6,5 +6,5 @@ public class BackupWeaponModel : MonoBehaviour
 {
     public WeaponType weaponType;
 
-    
+
 }
