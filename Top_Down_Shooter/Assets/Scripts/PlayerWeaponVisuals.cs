@@ -42,12 +42,14 @@ public class PlayerWeaponVisuals : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log((int)CurrentWeaponModel().holdType);
+        //Debug.Log((int)CurrentWeaponModel().holdType);
        
         UpdateRigWeight();
 
         UpdateLeftHandIKWeight();
     }
+
+    
 
     public WeaponModel CurrentWeaponModel()
     {
@@ -70,7 +72,10 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         if (isEquipWeapon)
             return;
+
+        float reloadSped = player.weapon.CurrentWeapon().reloadSpeed;
         animator.SetTrigger("Reload");
+        animator.SetFloat("ReloadSpeed", reloadSped);
         ReduceRigWeight();
         
     }
@@ -111,10 +116,14 @@ public class PlayerWeaponVisuals : MonoBehaviour
     {
         EquipType equipType = CurrentWeaponModel().equipAnimationType;
 
+        float eqipSpeed = player.weapon.CurrentWeapon().equipSpeed;
+
         leftHandIK.weight = 0;
         ReduceRigWeight();
-        animator.SetFloat("Weapon Equip Type", ((float)equipType));
         animator.SetTrigger("EquipWeapon");
+        animator.SetFloat("Weapon Equip Type", ((float)equipType));
+        animator.SetFloat("EquipSpeed", eqipSpeed);
+
 
         SetBusyGrabWeaponTo(true);
 

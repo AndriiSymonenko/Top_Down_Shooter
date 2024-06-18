@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 public enum WeaponType
 {
     Pistol, 
@@ -16,8 +18,13 @@ public class Weapon
 
     public int bulletsInMagazine;
     public int magazineCapacity;
-
     public int totalReserveAmmo;
+
+    [Range(1, 2)]
+    public float reloadSpeed = 1;
+
+    [Range(1, 2)]
+    public float equipSpeed = 1;
 
     public bool CanShoot()
     {
