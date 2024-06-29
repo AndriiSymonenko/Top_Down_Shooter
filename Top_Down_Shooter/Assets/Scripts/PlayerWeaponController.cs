@@ -82,14 +82,16 @@ public class PlayerWeaponController : MonoBehaviour
         if (currentWeapon.CanShoot() == false)
             return;
 
-        GameObject bulletPrefab = Instantiate(bullet, gunPoint.position, Quaternion.identity);
-        GameObject fireWeaponFX = Instantiate(weaponFire, gunPoint.position, Quaternion.identity);
+        GameObject bulletPrefab = ObjectPool.instance.GetBullet();
+ 
+        bulletPrefab.transform.position = gunPoint.position;
+        bulletPrefab.transform.rotation = Quaternion.LookRotation(gunPoint.forward);
+    GameObject fireWeaponFX = Instantiate(weaponFire, gunPoint.position, Quaternion.identity);
 
         Rigidbody rbBulletPrefab = bulletPrefab.GetComponent<Rigidbody>();
 
         rbBulletPrefab.mass = REFERENCE_BULLET_SPEED / bulletSpeed;
         rbBulletPrefab.velocity = BulletDirection() * bulletSpeed;
-        Destroy(bulletPrefab, 10f);
         Destroy(fireWeaponFX, 1f);
 
         GetComponentInChildren<Animator>().SetTrigger("Shoot");
